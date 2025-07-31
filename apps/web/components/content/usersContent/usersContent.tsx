@@ -63,8 +63,9 @@ export function UsersContent() {
     {
       title: "Active users",
       value: "4",
-      desc: "67% total active users",
+      desc: "total active users",
       icon: "usercheck",
+      percentage: "+67",
     },
     {
       title: "Administrators",
@@ -99,7 +100,14 @@ export function UsersContent() {
 
                 <CardFooter>
                   <div className="flex gap-1">
-                    <p className="text-gray-700">{userInfo.desc}</p>
+                    <p
+                      className={`${userInfo.percentage && Number(userInfo.percentage) > 50 ? "text-green-700" : "text-red-600"}`}
+                    >
+                      {userInfo.percentage
+                        ? userInfo.percentage + "%"
+                        : ""}{" "}
+                    </p>
+                    {userInfo.desc}
                   </div>
                 </CardFooter>
               </Card>

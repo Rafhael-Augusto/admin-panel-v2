@@ -1,9 +1,12 @@
 import {
+  AlarmClock,
   CircleQuestionMark,
   DollarSign,
   Package,
   Shield,
+  ShoppingCart,
   TrendingUp,
+  Truck,
   UserCheck,
   Users,
   UserX,
@@ -28,6 +31,18 @@ export function getIcon(icon: string) {
 
     case "products":
       return Package;
+
+    case "shoppingcart":
+      return ShoppingCart;
+
+    case "alarmclock":
+      return AlarmClock;
+
+    case "truck":
+      return Truck;
+
+    case "dollarsign":
+      return DollarSign;
 
     case "ticket":
       return TrendingUp;
