@@ -1,7 +1,7 @@
 "use client";
 
 import { ResponsivePie } from "@nivo/pie";
-import { PieData } from "@/types/chartTypes";
+import { PieData } from "@/@types/chartTypes";
 
 export function PieChart({ data }: PieData) {
   return (

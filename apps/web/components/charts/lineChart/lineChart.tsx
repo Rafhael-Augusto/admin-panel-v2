@@ -1,6 +1,6 @@
 "use client";
 
-import { LineData } from "@/types/chartTypes";
+import { LineData } from "@/@types/chartTypes";
 import { ResponsiveLine } from "@nivo/line";
 
 export function LineChart({ data }: LineData) {

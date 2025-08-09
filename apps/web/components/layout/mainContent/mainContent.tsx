@@ -7,6 +7,7 @@ interface Props {
 
 export function MainContent({ content }: Props) {
   const List = findComponentByName(content);
+  console.log(content);
 
   return (
     <div className="w-full">

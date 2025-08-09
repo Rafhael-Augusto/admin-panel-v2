@@ -10,6 +10,12 @@ import {
   UserCheck,
   Users,
   UserX,
+  TargetIcon,
+  Calculator,
+  BarChart3,
+  Download,
+  Calendar,
+  Upload,
 } from "lucide-react";
 
 export function getIcon(icon: string) {
@@ -46,6 +52,24 @@ export function getIcon(icon: string) {
 
     case "ticket":
       return TrendingUp;
+
+    case "target":
+      return TargetIcon;
+
+    case "calculator":
+      return Calculator;
+
+    case "barchart":
+      return BarChart3;
+
+    case "download":
+      return Download;
+
+    case "calendar":
+      return Calendar;
+
+    case "upload":
+      return Upload;
 
     default:
       return CircleQuestionMark;

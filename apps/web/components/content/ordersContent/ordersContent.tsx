@@ -100,7 +100,8 @@ export function OrdersContent() {
                   >
                     {orderInfo.percentage ? orderInfo.percentage + "%" : ""}
                   </p>
-                  {orderInfo.desc}
+                  <p className="text-gray-700">{orderInfo.desc}</p>
+                  
                 </div>
               </CardFooter>
             </Card>

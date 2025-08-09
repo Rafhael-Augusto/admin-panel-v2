@@ -1,4 +1,8 @@
-import { LineChart, PieChart } from "@/components/charts";
+"use client";
+
+import { LineChart } from "@/components/charts";
+import { ResponsivePie } from "@nivo/pie";
+
 import {
   Card,
   CardContent,
@@ -196,10 +200,25 @@ export function DashboardContent() {
 
         <Card className="h-[500px] w-[500px] m-4">
           <CardHeader className="text-3xl font-medium">
-            Best selling product
+            Best selling products
           </CardHeader>
 
-          <PieChart data={bestSellingProducts} />
+          <CardContent className="h-full w-full">
+            <ResponsivePie
+              data={bestSellingProducts}
+              margin={{ top: 10, right: 0, bottom: 60, left: 0 }}
+              legends={[
+                {
+                  anchor: "bottom",
+                  direction: "row",
+                  translateY: 56,
+                  itemWidth: 100,
+                  itemHeight: 18,
+                  symbolShape: "circle",
+                },
+              ]}
+            />
+          </CardContent>
         </Card>
       </div>
 

@@ -107,7 +107,8 @@ export function UsersContent() {
                         ? userInfo.percentage + "%"
                         : ""}{" "}
                     </p>
-                    {userInfo.desc}
+                    
+                    <p className="text-gray-700">{userInfo.desc}</p>
                   </div>
                 </CardFooter>
               </Card>
