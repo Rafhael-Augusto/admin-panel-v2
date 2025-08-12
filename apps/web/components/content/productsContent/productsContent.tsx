@@ -202,7 +202,7 @@ export function ProductsContent() {
         </div>
       </div>
 
-      {/* <NewProductModal /> */}
+      <NewProductModal />
     </>
   );
 }

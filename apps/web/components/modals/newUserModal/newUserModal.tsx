@@ -23,7 +23,7 @@ export function NewUserModal() {
   const roles = ["admin", "editor", "viewer"];
 
   return (
-    <Dialog open={true}>
+    <Dialog open={false}>
       <form>
         <DialogContent>
           <DialogHeader>

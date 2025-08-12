@@ -25,7 +25,7 @@ export function NewProductModal() {
   const categories = ["electronics", "clothes"];
 
   return (
-    <Dialog open={true}>
+    <Dialog open={false}>
       <form>
         <DialogContent className="max-h-[70vh] overflow-y-scroll ">
           <DialogHeader>

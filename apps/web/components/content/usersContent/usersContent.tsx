@@ -107,7 +107,7 @@ export function UsersContent() {
                         ? userInfo.percentage + "%"
                         : ""}{" "}
                     </p>
-                    
+
                     <p className="text-gray-700">{userInfo.desc}</p>
                   </div>
                 </CardFooter>
@@ -206,7 +206,7 @@ export function UsersContent() {
         </div>
       </div>
 
-      {/* <NewUserModal /> */}
+      <NewUserModal />
     </>
   );
 }

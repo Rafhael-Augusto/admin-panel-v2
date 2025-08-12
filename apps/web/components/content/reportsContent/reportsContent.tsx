@@ -16,7 +16,14 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { getIcon } from "@/utils/iconUtils";
-import { BarChart3, Calendar1, Funnel, Settings } from "lucide-react";
+import {
+  BarChart3,
+  Calendar1,
+  Download,
+  FileText,
+  Funnel,
+  Settings,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
@@ -110,6 +117,33 @@ export function ReportsContent() {
     },
   ];
 
+  const latestReports = [
+    {
+      title: "Sales by Category",
+      type: "Sales",
+      date: "2024-01-20",
+      time: "14:30",
+      size: "2.3 MB",
+      downloads: "12",
+    },
+    {
+      title: "Sales by Products",
+      type: "Products",
+      date: "2024-01-15",
+      time: "09:15",
+      size: "1.8 MB",
+      downloads: "8",
+    },
+    {
+      title: "Client Analysis",
+      type: "Clients",
+      date: "2024-01-10",
+      time: "16:45",
+      size: "3.1 MB",
+      downloads: "25",
+    },
+  ];
+
   return (
     <div className="h-full px-5">
       <div className="flex gap-6">
@@ -141,8 +175,8 @@ export function ReportsContent() {
         })}
       </div>
 
-      <div className="grid grid-cols-2 gap-4 pr-8">
-        <div className="my-4">
+      <div className="flex gap-4 pr-8">
+        <div className="my-4 w-[38%]">
           <Card>
             <CardHeader>
               <CardTitle className="flex gap-2 items-center">
@@ -286,11 +320,11 @@ export function ReportsContent() {
           </Card>
         </div>
 
-        <div className="my-4 ">
+        <div className="my-4 w-[62%]">
           <Card className="w-full [&>*]:flex [&>*]:justify-center">
             <CardHeader>
               <CardTitle>
-                <BarChart3 size={80} className="text-gray-700" />
+                <BarChart3 size={60} className="text-gray-700" />
               </CardTitle>
             </CardHeader>
 
@@ -306,6 +340,48 @@ export function ReportsContent() {
             </CardContent>
           </Card>
         </div>
+      </div>
+
+      <div>
+        <Card>
+          <CardHeader>
+            <CardTitle>
+              <h2 className="Font-bold text-3xl">Latest Reports</h2>
+            </CardTitle>
+          </CardHeader>
+
+          <CardContent>
+            {latestReports.map((report, index) => (
+              <Card key={index} className="my-4">
+                <CardContent>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <FileText className="text-gray-700" size={40} />
+
+                      <div>
+                        <span className="text-lg">{report.title}</span>
+                        <p className="text-gray-700 text-sm">
+                          {report.type} • {report.date} {report.time} •{" "}
+                          {report.size}
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-8">
+                      <Badge variant={"outline"}>
+                        {report.downloads} downloads
+                      </Badge>
+
+                      <Button variant={"outline"} className="cursor-pointer">
+                        <Download />
+                      </Button>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </CardContent>
+        </Card>
       </div>
     </div>
   );
