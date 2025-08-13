@@ -1,3 +1,7 @@
+"use client";
+
+import { Dispatch, FormEvent, SetStateAction } from "react";
+
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import {
@@ -9,10 +13,23 @@ import {
 } from "@/components/ui/dialog";
 import { AlertTriangle, LogOut } from "lucide-react";
 
-export function LogoutModal() {
+interface modal {
+  setModalOpen: Dispatch<SetStateAction<boolean>>;
+  isModalOpen: boolean;
+}
+
+export function LogoutModal({ setModalOpen, isModalOpen }: modal) {
+  const onOpenChange = () => {
+    setModalOpen(!isModalOpen);
+  };
+
+  const handleClose = () => {
+    setModalOpen(false);
+  };
+
   return (
     <div>
-      <Dialog open={false}>
+      <Dialog open={isModalOpen} onOpenChange={onOpenChange}>
         <DialogContent>
           <DialogHeader>
             <DialogTitle>
@@ -65,7 +82,11 @@ export function LogoutModal() {
             </div>
 
             <div className="flex items-center justify-end gap-4 mt-4">
-              <Button variant={"secondary"} className="cursor-pointer w-[30%]">
+              <Button
+                variant={"secondary"}
+                className="cursor-pointer w-[30%]"
+                onClick={handleClose}
+              >
                 Cancel
               </Button>
 

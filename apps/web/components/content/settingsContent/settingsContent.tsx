@@ -1,3 +1,7 @@
+"use client";
+
+import { useState } from "react";
+
 import { DeleteAccountModal, EditProfileModal } from "@/components/modals";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -30,11 +34,22 @@ import {
 } from "lucide-react";
 
 export function SettingsContent() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+
   const userInfo = {
     username: "Rafhael",
     email: "Rafhael@gmail.com",
     role: "admin",
     account: "verified",
+  };
+
+  const handleModalClick = () => {
+    setIsModalOpen(!isModalOpen);
+  };
+
+  const handleDeleteClick = () => {
+    setIsDeleteOpen(!isDeleteOpen);
   };
 
   return (
@@ -65,7 +80,11 @@ export function SettingsContent() {
                   <span className="text-xl font-bold">{userInfo.username}</span>
                   <div className="flex justify-between items-center">
                     <span className="text-gray-700">{userInfo.email}</span>
-                    <Button variant={"outline"} className="cursor-pointer">
+                    <Button
+                      variant={"outline"}
+                      className="cursor-pointer"
+                      onClick={handleModalClick}
+                    >
                       Edit Profile
                     </Button>
                   </div>
@@ -248,6 +267,7 @@ export function SettingsContent() {
                           New orders
                         </span>
                       </div>
+                      false
                       <p className="text-gray-700 text-sm">
                         Notify about new orders
                       </p>
@@ -398,7 +418,11 @@ export function SettingsContent() {
                 </p>
               </div>
 
-              <Button variant={"destructive"} className="cursor-pointer">
+              <Button
+                variant={"destructive"}
+                className="cursor-pointer"
+                onClick={handleDeleteClick}
+              >
                 <TrashIcon />
                 Delete account
               </Button>
@@ -407,8 +431,14 @@ export function SettingsContent() {
         </div>
       </div>
 
-      <EditProfileModal />
-      <DeleteAccountModal />
+      <EditProfileModal
+        setModalOpen={setIsModalOpen}
+        isModalOpen={isModalOpen}
+      />
+      <DeleteAccountModal
+        setModalOpen={setIsDeleteOpen}
+        isModalOpen={isDeleteOpen}
+      />
     </>
   );
 }

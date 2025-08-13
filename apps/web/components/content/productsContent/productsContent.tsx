@@ -35,6 +35,8 @@ export function ProductsContent() {
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [selectedStatus, setSelectedStatus] = useState("all");
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const products = [
     { title: "Total products", value: "5", desc: "3 active" },
     { title: "Total stock", value: "228", desc: "units in stock" },
@@ -70,6 +72,10 @@ export function ProductsContent() {
   ];
 
   const categories = ["electronics", "clothes"];
+
+  const handleModalClick = () => {
+    setIsModalOpen(!isModalOpen);
+  };
 
   return (
     <>
@@ -161,7 +167,7 @@ export function ProductsContent() {
             <CardHeader className="flex items-center justify-between text-3xl font-bold">
               List of Products ({productsList.length})
               <div className="flex items-center gap-4">
-                <Button className="cursor-pointer">
+                <Button className="cursor-pointer" onClick={handleModalClick}>
                   {" "}
                   <Plus /> New product
                 </Button>
@@ -202,7 +208,10 @@ export function ProductsContent() {
         </div>
       </div>
 
-      <NewProductModal />
+      <NewProductModal
+        setModalOpen={setIsModalOpen}
+        isModalOpen={isModalOpen}
+      />
     </>
   );
 }

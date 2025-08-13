@@ -1,3 +1,7 @@
+"use client";
+
+import { Dispatch, FormEvent, SetStateAction } from "react";
+
 import { toUpperCaseFirst } from "@/utils/stringUtils";
 
 import { Button } from "@/components/ui/button";
@@ -19,39 +23,57 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-export function NewUserModal() {
+interface modal {
+  setModalOpen: Dispatch<SetStateAction<boolean>>;
+  isModalOpen: boolean;
+}
+
+export function NewUserModal({ setModalOpen, isModalOpen }: modal) {
   const roles = ["admin", "editor", "viewer"];
 
-  return (
-    <Dialog open={false}>
-      <form>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>New user</DialogTitle>
-            <DialogDescription>
-              Create a new user for the system
-            </DialogDescription>
-          </DialogHeader>
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setModalOpen(!isModalOpen);
+  };
 
+  const handleClose = () => {
+    setModalOpen(false);
+  };
+
+  return (
+    <Dialog open={isModalOpen} onOpenChange={handleClose}>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>New user</DialogTitle>
+          <DialogDescription>
+            Create a new user for the system
+          </DialogDescription>
+        </DialogHeader>
+
+        <form onSubmit={handleSubmit}>
           <div className="grid grid-cols-2 gap-4">
             <div>
               <Label htmlFor="productName" className="text-md mb-1">
                 Full name
               </Label>
-              <Input id="productName" placeholder="User's  full name" />
+              <Input
+                id="productName"
+                placeholder="User's  full name"
+                required
+              />
             </div>
             <div>
               <Label htmlFor="productName" className="text-md mb-1">
                 E-mail
               </Label>
-              <Input id="productName" placeholder="User's  e-mail" />
+              <Input id="productName" placeholder="User's  e-mail" required />
             </div>
           </div>
 
           <div className="grid grid-cols-2 gap-4 my-4">
             <div>
               <Label className="text-md mb-1">Role</Label>
-              <Select>
+              <Select required>
                 <SelectTrigger className="w-full">
                   <SelectValue placeholder="Role" />
                 </SelectTrigger>
@@ -69,7 +91,7 @@ export function NewUserModal() {
 
             <div>
               <Label className="text-md">Status</Label>
-              <Select>
+              <Select required>
                 <SelectTrigger className="w-full">
                   <SelectValue placeholder="Status" />
                 </SelectTrigger>
@@ -84,11 +106,13 @@ export function NewUserModal() {
           </div>
 
           <DialogFooter className="[&>*]:cursor-pointer">
-            <Button variant={"outline"}>Cancel</Button>
-            <Button>Create product</Button>
+            <Button type="button" variant={"outline"} onClick={handleClose}>
+              Cancel
+            </Button>
+            <Button type="submit">Create user</Button>
           </DialogFooter>
-        </DialogContent>
-      </form>
+        </form>
+      </DialogContent>
     </Dialog>
   );
 }

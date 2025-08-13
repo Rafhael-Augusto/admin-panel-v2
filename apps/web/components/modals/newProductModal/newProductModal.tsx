@@ -1,3 +1,5 @@
+import { Dispatch, FormEvent, SetStateAction } from "react";
+
 import { toUpperCaseFirst } from "@/utils/stringUtils";
 import { ImageUpload } from "@/components/layout";
 
@@ -21,20 +23,34 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 
-export function NewProductModal() {
+interface modal {
+  setModalOpen: Dispatch<SetStateAction<boolean>>;
+  isModalOpen: boolean;
+}
+
+export function NewProductModal({ setModalOpen, isModalOpen }: modal) {
   const categories = ["electronics", "clothes"];
 
-  return (
-    <Dialog open={false}>
-      <form>
-        <DialogContent className="max-h-[70vh] overflow-y-scroll ">
-          <DialogHeader>
-            <DialogTitle>New product</DialogTitle>
-            <DialogDescription>
-              Create a new product for the catalog
-            </DialogDescription>
-          </DialogHeader>
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setModalOpen(!isModalOpen);
+  };
 
+  const handleClose = () => {
+    setModalOpen(false);
+  };
+
+  return (
+    <Dialog open={isModalOpen} onOpenChange={handleClose}>
+      <DialogContent className="max-h-[70vh] overflow-y-scroll ">
+        <DialogHeader>
+          <DialogTitle>New product</DialogTitle>
+          <DialogDescription>
+            Create a new product for the catalog
+          </DialogDescription>
+        </DialogHeader>
+
+        <form onSubmit={handleSubmit}>
           <div>
             <ImageUpload />
           </div>
@@ -44,11 +60,11 @@ export function NewProductModal() {
               <Label htmlFor="productName" className="text-md mb-1">
                 Product name
               </Label>
-              <Input id="productName" placeholder="Product name" />
+              <Input id="productName" placeholder="Product name" required />
             </div>
             <div>
               <Label className="text-md mb-1">Select category</Label>
-              <Select>
+              <Select required>
                 <SelectTrigger className="w-full">
                   <SelectValue placeholder="Category" />
                 </SelectTrigger>
@@ -75,6 +91,7 @@ export function NewProductModal() {
                 type="number"
                 placeholder="0,00"
                 className="w-[140px]"
+                required
               />
             </div>
 
@@ -87,12 +104,13 @@ export function NewProductModal() {
                 type="number"
                 placeholder="0"
                 className="w-[140px]"
+                required
               />
             </div>
 
             <div>
               <Label className="text-md">Status</Label>
-              <Select>
+              <Select required>
                 <SelectTrigger className="w-[140px]">
                   <SelectValue placeholder="Status" />
                 </SelectTrigger>
@@ -111,18 +129,21 @@ export function NewProductModal() {
               Description
             </Label>
             <Textarea
+              required
               id="description"
               placeholder="Description of the product"
               rows={4}
             />
           </div>
 
-          <DialogFooter className="[&>*]:cursor-pointer">
-            <Button variant={"outline"}>Cancel</Button>
-            <Button>Create product</Button>
+          <DialogFooter className="[&>*]:cursor-pointer mt-4">
+            <Button variant={"outline"} onClick={handleClose}>
+              Cancel
+            </Button>
+            <Button type="submit">Create product</Button>
           </DialogFooter>
-        </DialogContent>
-      </form>
+        </form>
+      </DialogContent>
     </Dialog>
   );
 }

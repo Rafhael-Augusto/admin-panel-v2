@@ -31,7 +31,6 @@ import {
 import {
   BarChart3,
   Calendar1,
-  Download,
   Filter,
   TrendingDown,
   TrendingUp,
@@ -212,10 +211,6 @@ export function SalesContent() {
               </Button>
             </div>
           </div>
-          <Button variant={"outline"} className="cursor-pointer">
-            <Download />
-            Export
-          </Button>
         </CardContent>
       </Card>
 

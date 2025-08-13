@@ -1,3 +1,7 @@
+"use client";
+
+import { useState } from "react";
+
 import { LogoutModal } from "@/components/modals";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -7,6 +11,12 @@ import { getIcon } from "@/utils/iconUtils";
 import { Calendar, LogOut, Mail, MapPin, User } from "lucide-react";
 
 export function AccountContent() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleModalClick = () => {
+    setIsModalOpen(!isModalOpen);
+  };
+
   const accountCards = [
     { title: "Account status", desc: "Active", icon: "shield", color: "green" },
     {
@@ -125,7 +135,11 @@ export function AccountContent() {
                     </p>
                   </div>
 
-                  <Button variant={"outline"} className="cursor-pointer">
+                  <Button
+                    variant={"outline"}
+                    className="cursor-pointer"
+                    onClick={handleModalClick}
+                  >
                     <LogOut /> Log out
                   </Button>
                 </CardContent>
@@ -158,7 +172,7 @@ export function AccountContent() {
         </div>
       </div>
 
-      <LogoutModal />
+      <LogoutModal setModalOpen={setIsModalOpen} isModalOpen={isModalOpen} />
     </>
   );
 }

@@ -1,5 +1,14 @@
+"use client";
+
+import { Dispatch, FormEvent, SetStateAction } from "react";
+
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
@@ -14,27 +23,45 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 
-export function EditProfileModal() {
+interface modal {
+  setModalOpen: Dispatch<SetStateAction<boolean>>;
+  isModalOpen: boolean;
+}
+
+export function EditProfileModal({ setModalOpen, isModalOpen }: modal) {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setModalOpen(!isModalOpen);
+  };
+
+  const handleClose = () => {
+    setModalOpen(false);
+  };
+
   return (
     <div>
-      <Dialog open={false}>
-        <form>
-          <DialogContent>
-            <div className="flex gap-4">
-              <div>
-                <Label htmlFor="name" className="text-lg">
-                  Name
-                </Label>
-                <Input id="name" placeholder="Name" />
-              </div>
+      <Dialog open={isModalOpen} onOpenChange={handleClose}>
+        <DialogContent>
+          <form onSubmit={handleSubmit}>
+            <DialogHeader>
+              <DialogTitle>
+                <div className="flex gap-4">
+                  <div>
+                    <Label htmlFor="name" className="text-lg">
+                      Name
+                    </Label>
+                    <Input id="name" placeholder="Name" />
+                  </div>
 
-              <div>
-                <Label htmlFor="surname" className="text-lg">
-                  Surname
-                </Label>
-                <Input id="surname" placeholder="Surname" />
-              </div>
-            </div>
+                  <div>
+                    <Label htmlFor="surname" className="text-lg">
+                      Surname
+                    </Label>
+                    <Input id="surname" placeholder="Surname" />
+                  </div>
+                </div>
+              </DialogTitle>
+            </DialogHeader>
 
             <div className="flex flex-col gap-4">
               <div>
@@ -81,9 +108,11 @@ export function EditProfileModal() {
               </div>
             </div>
 
-            <Button className="cursor-pointer">Save changes</Button>
-          </DialogContent>
-        </form>
+            <Button type="submit" className="cursor-pointer w-full mt-8">
+              Save changes
+            </Button>
+          </form>
+        </DialogContent>
       </Dialog>
     </div>
   );

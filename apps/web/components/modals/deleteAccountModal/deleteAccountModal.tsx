@@ -1,33 +1,56 @@
+"use client";
+
+import { Dispatch, FormEvent, SetStateAction } from "react";
+
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { TrashIcon, TriangleAlert } from "lucide-react";
+import { DialogTitle } from "@radix-ui/react-dialog";
 
-export function DeleteAccountModal() {
+interface modal {
+  setModalOpen: Dispatch<SetStateAction<boolean>>;
+  isModalOpen: boolean;
+}
+
+export function DeleteAccountModal({ setModalOpen, isModalOpen }: modal) {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setModalOpen(!isModalOpen);
+  };
+
+  const handleClose = () => {
+    setModalOpen(false);
+  };
+
   return (
     <div>
-      <Dialog open={false}>
-        <form>
-          <DialogContent>
-            <Alert variant={"destructive"}>
-              <AlertTitle className="flex items-center justify-center gap-2">
-                <TriangleAlert />
-                <p className="text-xl">Warning</p>
-              </AlertTitle>
+      <Dialog open={isModalOpen} onOpenChange={handleClose}>
+        <DialogContent>
+          <form onSubmit={handleSubmit}>
+            <DialogHeader>
+              <DialogTitle>
+                <Alert variant={"destructive"}>
+                  <AlertTitle className="flex items-center justify-center gap-2">
+                    <TriangleAlert />
+                    <p className="text-xl">Warning</p>
+                  </AlertTitle>
 
-              <AlertDescription>
-                <p className="text-lg">
-                  This action is irreversible. All your data, including profile,
-                  settings, and history, will be permanently removed from our
-                  servers.
-                </p>
-              </AlertDescription>
-            </Alert>
+                  <AlertDescription>
+                    <p className="text-lg">
+                      This action is irreversible. All your data, including
+                      profile, settings, and history, will be permanently
+                      removed from our servers.
+                    </p>
+                  </AlertDescription>
+                </Alert>
+              </DialogTitle>
+            </DialogHeader>
 
-            <div>
+            <div className="mt-8">
               <span className="font-bold">What will be deleted:</span>
 
               <ul className="[&>*]:flex [&>*]:items-center [&>*]:gap-2 [&>li>*]:text-red-700 my-4 flex flex-col gap-1">
@@ -56,14 +79,14 @@ export function DeleteAccountModal() {
 
             <div className="[&>*]:flex [&>*]:gap-2 [&>*]:items-center">
               <div>
-                <Checkbox id="confirm" />
+                <Checkbox id="confirm" required />
                 <Label htmlFor="confirm" className="text-md cursor-pointer">
                   I understand that this action is permanent and irreversible
                 </Label>
               </div>
 
               <div>
-                <Checkbox id="confirm2" />
+                <Checkbox id="confirm2" required />
                 <Label htmlFor="confirm2" className="text-md cursor-pointer">
                   I confirm that i wish to permanently delete my account
                 </Label>
@@ -76,6 +99,7 @@ export function DeleteAccountModal() {
                   Type your password to confirm
                 </Label>
                 <Input
+                  required
                   id="currentpassword"
                   placeholder="Your current password"
                 />
@@ -85,16 +109,20 @@ export function DeleteAccountModal() {
                 <Label htmlFor="delete" className="text-lg">
                   Type &apos;DELETE&apos; to confirm
                 </Label>
-                <Input id="delete" placeholder="DELETE" />
+                <Input required id="delete" placeholder="DELETE" />
               </div>
             </div>
 
-            <Button variant={"destructive"} className="cursor-pointer">
+            <Button
+              variant={"destructive"}
+              className="cursor-pointer w-full mt-4"
+              type="submit"
+            >
               <TrashIcon />
               Delete account
             </Button>
-          </DialogContent>
-        </form>
+          </form>
+        </DialogContent>
       </Dialog>
     </div>
   );

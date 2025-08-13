@@ -36,6 +36,8 @@ export function UsersContent() {
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [selectedStatus, setSelectedStatus] = useState("all");
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const users = [
     {
       name: "Rafhael",
@@ -75,6 +77,10 @@ export function UsersContent() {
     },
     { title: "Pending", value: "1", desc: "waiting approval", icon: "userx" },
   ];
+
+  const handleModalClick = () => {
+    setIsModalOpen(!isModalOpen);
+  };
 
   return (
     <>
@@ -171,7 +177,7 @@ export function UsersContent() {
             <CardHeader className="flex items-center justify-between text-3xl font-bold">
               List of Users ({users.length})
               <div className="flex items-center gap-4">
-                <Button className="cursor-pointer">
+                <Button className="cursor-pointer" onClick={handleModalClick}>
                   {" "}
                   <Plus /> New user
                 </Button>
@@ -206,7 +212,7 @@ export function UsersContent() {
         </div>
       </div>
 
-      <NewUserModal />
+      <NewUserModal setModalOpen={setIsModalOpen} isModalOpen={isModalOpen} />
     </>
   );
 }
