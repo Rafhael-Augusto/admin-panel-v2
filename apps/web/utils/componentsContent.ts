@@ -1,4 +1,5 @@
 import {
+  AccountContent,
   DashboardContent,
   OrdersContent,
   ProductsContent,
@@ -16,4 +17,5 @@ export const contentList = [
   { name: "sales", component: SalesContent },
   { name: "reports", component: ReportsContent },
   { name: "settings", component: SettingsContent },
+  { name: "account", component: AccountContent },
 ];

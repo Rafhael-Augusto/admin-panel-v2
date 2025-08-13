@@ -385,9 +385,9 @@ export function SettingsContent() {
           </div>
         </div>
 
-        <div className="my-8">
-          <Card className="bg-red-100">
-            <CardContent className="flex items-center justify-between">
+        <div className="mt-12">
+          <Card>
+            <CardContent className="flex items-center justify-between ">
               <div>
                 <div className="flex items-center gap-2 [&>*]:text-red-600">
                   <TriangleAlert />

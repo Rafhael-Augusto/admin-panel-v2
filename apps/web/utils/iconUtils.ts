@@ -16,6 +16,7 @@ import {
   Download,
   Calendar,
   Upload,
+  Activity,
 } from "lucide-react";
 
 export function getIcon(icon: string) {
@@ -70,6 +71,9 @@ export function getIcon(icon: string) {
 
     case "upload":
       return Upload;
+
+    case "activity":
+      return Activity;
 
     default:
       return CircleQuestionMark;

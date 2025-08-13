@@ -5,3 +5,4 @@ export { OrdersContent } from "@/components/content/ordersContent/ordersContent"
 export { SalesContent } from "@/components/content/salesContent/salesContent";
 export { ReportsContent } from "@/components/content/reportsContent/reportsContent";
 export { SettingsContent } from "@/components/content/settingsContent/settingsContent";
+export { AccountContent } from "@/components/content/accountContent/accountContent";
