@@ -137,7 +137,7 @@ export function NewProductModal({ setModalOpen, isModalOpen }: modal) {
           </div>
 
           <DialogFooter className="[&>*]:cursor-pointer mt-4">
-            <Button variant={"outline"} onClick={handleClose}>
+            <Button variant={"outline"} type="button" onClick={handleClose}>
               Cancel
             </Button>
             <Button type="submit">Create product</Button>

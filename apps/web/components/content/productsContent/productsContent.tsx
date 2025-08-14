@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { Product } from "@/@types/apiTypes";
+import Filter from "@/utils/searchFilterUtils";
 
 import { NewProductModal } from "@/components/modals";
-import { toUpperCaseFirst } from "@/utils/stringUtils";
 import { Package, Plus, Search } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -36,6 +37,7 @@ export function ProductsContent() {
   const [selectedStatus, setSelectedStatus] = useState("all");
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [filteredItems, setFilteredItems] = useState<Product[]>();
 
   const products = [
     { title: "Total products", value: "5", desc: "3 active" },
@@ -47,31 +49,42 @@ export function ProductsContent() {
   const productsList = [
     {
       name: "Iphone 15 Pro",
-      category: "electronics",
+      category: "Electronics",
       stock: "25",
       price: "R$ 9000",
+      status: "Active",
     },
     {
       name: "Notebook",
-      category: "electronics",
+      category: "Electronics",
       stock: "10",
       price: "R$ 3800,55",
+      status: "Active",
     },
     {
       name: "Tshirt",
-      category: "clothes",
+      category: "Clothes",
       stock: "90",
       price: "R$ 59,55",
+      status: "Active",
     },
     {
       name: "Jordans",
-      category: "shoes",
+      category: "Shoes",
       stock: "0",
       price: "R$ 59,55",
+      status: "Inactive",
     },
   ];
 
-  const categories = ["electronics", "clothes"];
+  useEffect(() => {
+    const filterResult = Filter({
+      list: productsList,
+      category: selectedCategory,
+      status: selectedStatus,
+    });
+    setFilteredItems(filterResult as Product[]);
+  }, [selectedCategory, selectedStatus]);
 
   const handleModalClick = () => {
     setIsModalOpen(!isModalOpen);
@@ -133,13 +146,9 @@ export function ProductsContent() {
 
                   <SelectContent>
                     <SelectItem value="all">All categories</SelectItem>
-                    {categories.map((category, index) => {
-                      return (
-                        <SelectItem key={index} value={category}>
-                          {toUpperCaseFirst(category)}
-                        </SelectItem>
-                      );
-                    })}
+                    <SelectItem value="electronics">Electronics</SelectItem>
+                    <SelectItem value="clothes">Clothes</SelectItem>
+                    <SelectItem value="shoes">Shoes</SelectItem>
                   </SelectContent>
                 </Select>
 
@@ -165,7 +174,7 @@ export function ProductsContent() {
         <div>
           <Card>
             <CardHeader className="flex items-center justify-between text-3xl font-bold">
-              List of Products ({productsList.length})
+              List of Products ({(filteredItems ?? productsList).length})
               <div className="flex items-center gap-4">
                 <Button className="cursor-pointer" onClick={handleModalClick}>
                   {" "}
@@ -187,7 +196,7 @@ export function ProductsContent() {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {productsList.map((product, index) => {
+                  {(filteredItems ?? productsList).map((product, index) => {
                     return (
                       <TableRow key={index}>
                         <TableCell>Image here </TableCell>
@@ -195,9 +204,7 @@ export function ProductsContent() {
                         <TableCell>{product.category}</TableCell>
                         <TableCell>{product.stock}</TableCell>
                         <TableCell>{product.price}</TableCell>
-                        <TableCell>
-                          {Number(product.stock) > 0 ? "active" : "inactive"}
-                        </TableCell>
+                        <TableCell>{product.status}</TableCell>
                       </TableRow>
                     );
                   })}

@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import Filter from "@/utils/searchFilterUtils";
+import { User } from "@/@types/apiTypes";
 
 import { NewUserModal } from "@/components/modals";
-import { toUpperCaseFirst } from "@/utils/stringUtils";
 import { Plus, Search } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -33,27 +34,26 @@ import {
 import { getIcon } from "@/utils/iconUtils";
 
 export function UsersContent() {
-  const [selectedCategory, setSelectedCategory] = useState("all");
+  const [selectedRole, setSelectedRole] = useState("all");
   const [selectedStatus, setSelectedStatus] = useState("all");
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [filteredItems, setFilteredItems] = useState<User[]>();
 
   const users = [
     {
       name: "Rafhael",
       email: "rafhael@gmail.com",
-      role: "admin",
-      status: "active",
+      role: "Admin",
+      status: "Active",
     },
     {
       name: "Marcos",
       email: "marcos@gmail.com",
-      role: "editor",
-      status: "inactive",
+      role: "Editor",
+      status: "Inactive",
     },
   ];
-
-  const roles = ["Adiministrator", "Editor", "viewer"];
 
   const usersInfos = [
     {
@@ -81,6 +81,16 @@ export function UsersContent() {
   const handleModalClick = () => {
     setIsModalOpen(!isModalOpen);
   };
+
+  useEffect(() => {
+    const filterResult = Filter({
+      list: users,
+      role: selectedRole,
+      status: selectedStatus,
+    });
+
+    setFilteredItems(filterResult as User[]);
+  }, [selectedRole, selectedStatus]);
 
   return (
     <>
@@ -133,23 +143,16 @@ export function UsersContent() {
                   <Input className="pl-8 w-xl" placeholder="Search users..." />
                 </div>
 
-                <Select
-                  value={selectedCategory}
-                  onValueChange={setSelectedCategory}
-                >
+                <Select value={selectedRole} onValueChange={setSelectedRole}>
                   <SelectTrigger className="w-[160px]">
                     <SelectValue placeholder="Category" />
                   </SelectTrigger>
 
                   <SelectContent>
                     <SelectItem value="all">All roles</SelectItem>
-                    {roles.map((role, index) => {
-                      return (
-                        <SelectItem key={index} value={role}>
-                          {toUpperCaseFirst(role)}
-                        </SelectItem>
-                      );
-                    })}
+                    <SelectItem value="admin">Admin</SelectItem>
+                    <SelectItem value="editor">Editor</SelectItem>
+                    <SelectItem value="viewer">Viewer</SelectItem>
                   </SelectContent>
                 </Select>
 
@@ -175,7 +178,7 @@ export function UsersContent() {
         <div>
           <Card>
             <CardHeader className="flex items-center justify-between text-3xl font-bold">
-              List of Users ({users.length})
+              List of Users ({(filteredItems ?? users).length})
               <div className="flex items-center gap-4">
                 <Button className="cursor-pointer" onClick={handleModalClick}>
                   {" "}
@@ -195,7 +198,7 @@ export function UsersContent() {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {users.map((user, index) => {
+                  {(filteredItems ?? users).map((user, index) => {
                     return (
                       <TableRow key={index}>
                         <TableCell>{user.name}</TableCell>

@@ -51,9 +51,11 @@ export function LogoutModal({ setModalOpen, isModalOpen }: modal) {
                     <AlertTriangle />
                     <span className="text-xl">You will be disconnected</span>
                   </div>
-                  <p className="text-yellow-700 text-lg my-2 text-center">
-                    You will need to log in again to access your account
-                  </p>
+                  <div>
+                    <p className="text-yellow-700 text-lg my-2 text-center">
+                      You will need to log in again to access your account
+                    </p>
+                  </div>
                 </div>
               </CardContent>
             </Card>
