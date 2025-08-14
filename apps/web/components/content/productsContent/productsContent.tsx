@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Product } from "@/@types/apiTypes";
-import Filter from "@/utils/searchFilterUtils";
+import { Filter } from "@/utils/searchFilterUtils";
 
 import { NewProductModal } from "@/components/modals";
 import { Package, Plus, Search } from "lucide-react";
@@ -32,59 +32,62 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
+const products = [
+  { title: "Total products", value: "5", desc: "3 active" },
+  { title: "Total stock", value: "228", desc: "units in stock" },
+  { title: "Total value", value: "R$ 200.000", desc: "value of stock" },
+  { title: "No stock", value: "1", desc: "products with no stock" },
+];
+
+const productsList = [
+  {
+    name: "Iphone 15 Pro",
+    category: "Electronics",
+    stock: "25",
+    price: "R$ 9000",
+    status: "Active",
+  },
+  {
+    name: "Notebook",
+    category: "Electronics",
+    stock: "10",
+    price: "R$ 3800,55",
+    status: "Active",
+  },
+  {
+    name: "Tshirt",
+    category: "Clothes",
+    stock: "90",
+    price: "R$ 59,55",
+    status: "Active",
+  },
+  {
+    name: "Jordans",
+    category: "Shoes",
+    stock: "0",
+    price: "R$ 59,55",
+    status: "Inactive",
+  },
+];
+
 export function ProductsContent() {
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [selectedStatus, setSelectedStatus] = useState("all");
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [wordFilter, setWordFilter] = useState("");
+
   const [filteredItems, setFilteredItems] = useState<Product[]>();
-
-  const products = [
-    { title: "Total products", value: "5", desc: "3 active" },
-    { title: "Total stock", value: "228", desc: "units in stock" },
-    { title: "Total value", value: "R$ 200.000", desc: "value of stock" },
-    { title: "No stock", value: "1", desc: "products with no stock" },
-  ];
-
-  const productsList = [
-    {
-      name: "Iphone 15 Pro",
-      category: "Electronics",
-      stock: "25",
-      price: "R$ 9000",
-      status: "Active",
-    },
-    {
-      name: "Notebook",
-      category: "Electronics",
-      stock: "10",
-      price: "R$ 3800,55",
-      status: "Active",
-    },
-    {
-      name: "Tshirt",
-      category: "Clothes",
-      stock: "90",
-      price: "R$ 59,55",
-      status: "Active",
-    },
-    {
-      name: "Jordans",
-      category: "Shoes",
-      stock: "0",
-      price: "R$ 59,55",
-      status: "Inactive",
-    },
-  ];
 
   useEffect(() => {
     const filterResult = Filter({
       list: productsList,
       category: selectedCategory,
       status: selectedStatus,
+      words: wordFilter,
     });
     setFilteredItems(filterResult as Product[]);
-  }, [selectedCategory, selectedStatus]);
+  }, [selectedCategory, selectedStatus, wordFilter]);
 
   const handleModalClick = () => {
     setIsModalOpen(!isModalOpen);
@@ -133,6 +136,7 @@ export function ProductsContent() {
                   <Input
                     className="pl-8 w-xl"
                     placeholder="Search products..."
+                    onChange={(e) => setWordFilter(e.target.value)}
                   />
                 </div>
 

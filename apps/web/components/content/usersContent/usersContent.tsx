@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Filter from "@/utils/searchFilterUtils";
+import { Filter } from "@/utils/searchFilterUtils";
 import { User } from "@/@types/apiTypes";
 
 import { NewUserModal } from "@/components/modals";
@@ -33,50 +33,52 @@ import {
 } from "@/components/ui/table";
 import { getIcon } from "@/utils/iconUtils";
 
+const users = [
+  {
+    name: "Rafhael",
+    email: "rafhael@gmail.com",
+    role: "Admin",
+    status: "Active",
+  },
+  {
+    name: "Marcos",
+    email: "marcos@gmail.com",
+    role: "Editor",
+    status: "Inactive",
+  },
+];
+
+const usersInfos = [
+  {
+    title: "Total users",
+    value: "6",
+    desc: "registered users",
+    icon: "users",
+  },
+  {
+    title: "Active users",
+    value: "4",
+    desc: "total active users",
+    icon: "usercheck",
+    percentage: "+67",
+  },
+  {
+    title: "Administrators",
+    value: "2",
+    desc: "users with total access",
+    icon: "shield",
+  },
+  { title: "Pending", value: "1", desc: "waiting approval", icon: "userx" },
+];
+
 export function UsersContent() {
   const [selectedRole, setSelectedRole] = useState("all");
   const [selectedStatus, setSelectedStatus] = useState("all");
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [wordFilter, setWordFilter] = useState("");
+
   const [filteredItems, setFilteredItems] = useState<User[]>();
-
-  const users = [
-    {
-      name: "Rafhael",
-      email: "rafhael@gmail.com",
-      role: "Admin",
-      status: "Active",
-    },
-    {
-      name: "Marcos",
-      email: "marcos@gmail.com",
-      role: "Editor",
-      status: "Inactive",
-    },
-  ];
-
-  const usersInfos = [
-    {
-      title: "Total users",
-      value: "6",
-      desc: "registered users",
-      icon: "users",
-    },
-    {
-      title: "Active users",
-      value: "4",
-      desc: "total active users",
-      icon: "usercheck",
-      percentage: "+67",
-    },
-    {
-      title: "Administrators",
-      value: "2",
-      desc: "users with total access",
-      icon: "shield",
-    },
-    { title: "Pending", value: "1", desc: "waiting approval", icon: "userx" },
-  ];
 
   const handleModalClick = () => {
     setIsModalOpen(!isModalOpen);
@@ -87,10 +89,11 @@ export function UsersContent() {
       list: users,
       role: selectedRole,
       status: selectedStatus,
+      words: wordFilter,
     });
 
     setFilteredItems(filterResult as User[]);
-  }, [selectedRole, selectedStatus]);
+  }, [selectedRole, selectedStatus, wordFilter]);
 
   return (
     <>
@@ -140,7 +143,11 @@ export function UsersContent() {
               <div className="flex items-center justify-center gap-4">
                 <div className="relative">
                   <Search className="text-primary/50  absolute left-1.5 top-1.5" />
-                  <Input className="pl-8 w-xl" placeholder="Search users..." />
+                  <Input
+                    onChange={(e) => setWordFilter(e.target.value)}
+                    className="pl-8 w-xl"
+                    placeholder="Search users..."
+                  />
                 </div>
 
                 <Select value={selectedRole} onValueChange={setSelectedRole}>

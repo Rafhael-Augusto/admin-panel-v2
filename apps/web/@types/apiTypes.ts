@@ -12,3 +12,14 @@ export type Product = {
   price: string;
   status: string;
 };
+
+export type Order = {
+  order: string;
+  client: { name: string; email: string };
+  date: {
+    date: string;
+    time: string;
+  };
+  total: number;
+  status: string;
+};

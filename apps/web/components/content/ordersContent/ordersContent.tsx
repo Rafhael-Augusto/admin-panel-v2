@@ -1,8 +1,7 @@
 "use client";
 
-import { useState } from "react";
-
-import { toUpperCaseFirst } from "@/utils/stringUtils";
+import { useEffect, useState } from "react";
+import { Filter } from "@/utils/searchFilterUtils";
 import { Search } from "lucide-react";
 
 import {
@@ -29,6 +28,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { getIcon } from "@/utils/iconUtils";
+import { Order } from "@/@types/apiTypes";
 
 const ordersInfos = [
   {
@@ -55,22 +55,54 @@ const ordersInfos = [
 
 const orders = [
   {
-    order: "#300",
+    order: "#1",
     client: { name: "Rafhael Augusto", email: "rafhael@gmail.com" },
     date: {
       date: "07-28-2025",
       time: "14:30",
     },
-    total: "R$ 100,00",
-    status: "shipped",
+    total: 100,
+    status: "Shipped",
+  },
+  {
+    order: "#2",
+    client: { name: "Rafhael Augusto", email: "rafhael@gmail.com" },
+    date: {
+      date: "07-28-2025",
+      time: "14:30",
+    },
+    total: 100,
+    status: "Canceled",
+  },
+  {
+    order: "#3",
+    client: { name: "Rafhael Augusto", email: "rafhael@gmail.com" },
+    date: {
+      date: "07-28-2025",
+      time: "14:30",
+    },
+    total: 200,
+    status: "Shipped",
   },
 ];
 
-const status = ["preparing", "shipped", "delivered", "cancelled"];
-
 export function OrdersContent() {
-  const [selectedCategory, setSelectedCategory] = useState("all");
+  const [selectedOrder, setSelectedOrder] = useState("all");
   const [selectedStatus, setSelectedStatus] = useState("all");
+
+  const [filteredItems, setFilteredItems] = useState<Order[]>();
+  const [wordFilter, setWordFilter] = useState("");
+
+  useEffect(() => {
+    const filterResult = Filter({
+      list: orders,
+      order: selectedOrder,
+      status: selectedStatus,
+      words: wordFilter,
+    });
+
+    setFilteredItems(filterResult as Order[]);
+  }, [selectedOrder, selectedStatus, wordFilter]);
 
   return (
     <div className="h-full px-5">
@@ -101,7 +133,6 @@ export function OrdersContent() {
                     {orderInfo.percentage ? orderInfo.percentage + "%" : ""}
                   </p>
                   <p className="text-gray-700">{orderInfo.desc}</p>
-                  
                 </div>
               </CardFooter>
             </Card>
@@ -117,38 +148,36 @@ export function OrdersContent() {
             <div className="flex items-center justify-center gap-4">
               <div className="relative">
                 <Search className="text-primary/50  absolute left-1.5 top-1.5" />
-                <Input className="pl-8 w-xl" placeholder="Search users..." />
+                <Input
+                  className="pl-8 w-xl"
+                  placeholder="Search orders..."
+                  onChange={(e) => setWordFilter(e.target.value)}
+                />
               </div>
 
-              <Select
-                value={selectedCategory}
-                onValueChange={setSelectedCategory}
-              >
+              <Select value={selectedStatus} onValueChange={setSelectedStatus}>
                 <SelectTrigger className="w-[160px]">
                   <SelectValue placeholder="Category" />
                 </SelectTrigger>
 
                 <SelectContent>
                   <SelectItem value="all">All roles</SelectItem>
-                  {status.map((status, index) => {
-                    return (
-                      <SelectItem key={index} value={status}>
-                        {toUpperCaseFirst(status)}
-                      </SelectItem>
-                    );
-                  })}
+                  <SelectItem value="preparing">Preparing</SelectItem>
+                  <SelectItem value="shipped">Shipped</SelectItem>
+                  <SelectItem value="delivered">Delivered</SelectItem>
+                  <SelectItem value="canceled">Canceled</SelectItem>
                 </SelectContent>
               </Select>
 
-              <Select value={selectedStatus} onValueChange={setSelectedStatus}>
+              <Select value={selectedOrder} onValueChange={setSelectedOrder}>
                 <SelectTrigger className="w-[160px]">
                   <SelectValue placeholder="Status" />
                 </SelectTrigger>
 
                 <SelectContent>
-                  <SelectItem value="all">All status</SelectItem>
-                  <SelectItem value="active">Active</SelectItem>
-                  <SelectItem value="inactive">Inactive</SelectItem>
+                  <SelectItem value="all">Default</SelectItem>
+                  <SelectItem value="higher">Higher to lower</SelectItem>
+                  <SelectItem value="lower">Lower to higher</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -159,7 +188,7 @@ export function OrdersContent() {
       <div>
         <Card>
           <CardHeader className="flex items-center justify-between text-3xl font-bold">
-            List of Orders ({orders.length})
+            List of Orders ({(filteredItems ?? orders).length})
           </CardHeader>
 
           <CardContent>
@@ -174,7 +203,7 @@ export function OrdersContent() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {orders.map((order, index) => {
+                {(filteredItems ?? orders).map((order, index) => {
                   return (
                     <TableRow key={index}>
                       <TableCell>{order.order}</TableCell>
